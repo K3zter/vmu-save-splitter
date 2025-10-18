@@ -26,7 +26,7 @@ class Directory:
                 return index
 
     def get_entry(self, index: int):
-        return DirectoryEntry(self.entries[index])
+        return DirectoryEntry(self.entries[index], index)
     
     def add_entry(self, entry: DirectoryEntry):
         index = self.get_first_empty()
@@ -49,9 +49,9 @@ class Directory:
         entries = self.entries
 
         files = []
-        for entry in entries:
+        for index, entry in enumerate(entries):
             if entry != zero_byte_array:
-                entry_object = DirectoryEntry(entry)
+                entry_object = DirectoryEntry(entry, index)
                 files.append(entry_object)
 
         return files
@@ -67,15 +67,15 @@ class Directory:
 
         for index, entry in enumerate(entries):
             if entry != zero_byte_array:
-                entry_object = DirectoryEntry(entry)
+                entry_object = DirectoryEntry(entry, index)
                 print("| " + str(index).ljust(6) + "| " + entry_object.file_name.ljust(15)  + "| " + f"{str(entry_object.num_blocks):<7}" + "| " + str(entry_object.first_block).ljust(4) + "|")
 
         print(table_line)
 
     def file_exists(self, file_name):
-        for entry in self.entries:
+        for index, entry in enumerate(self.entries):
             if entry != zero_byte_array:
-                entry_object = DirectoryEntry(entry)
+                entry_object = DirectoryEntry(entry, index)
                 if(entry_object.file_name == file_name):
                     return True
 

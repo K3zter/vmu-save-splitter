@@ -32,3 +32,8 @@ class VmuFile:
                 self.is_valid = False
         self.num_blocks = len(self.blocks)
         # desc/desc_long padded with spaces so .strip() to remove whitespace, application padded with \x00 so .rstrip("\x00") to remove whitespace
+        # 64:66 Number of Icons
+        # 66:68 Icon animation speed
+        # 68:70 Graphic Eyecatch Type
+        # 70:72 CRC
+        self.crc = self.blocks[dir_entry.header_offset][70:72]
