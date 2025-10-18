@@ -26,6 +26,8 @@ if (not "Options" in config):
 if (not "loader" in config["Options"]):
      raise Exception("'loader' option missing from config.")
 
+empty = True if ("empty" in config["Options"] and config["Options"]["Empty"] == "1") else False
+
 regions = config["Options"]["region"].split(",") if "region" in config["Options"] else []
 loader = config["Options"]["loader"]
 
@@ -176,8 +178,8 @@ def find_game(file_name: str, file: VmuFile):
     return None
            
 
-
-empty_export_folder()
+if (empty):
+    empty_export_folder()
 
 vmuList =Path(import_dir).glob("*.vmu")
 
