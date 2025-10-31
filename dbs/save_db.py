@@ -6,7 +6,7 @@ class SaveDb:
     def __init__(self):
         self.save_names = []
         self.save_data = []
-        with open(save_db, newline='') as csv_file:
+        with open(save_db, newline='', encoding="ISO-8859-1") as csv_file:
             reader = csv.reader(csv_file)
             next(reader, None)
             for row in reader:

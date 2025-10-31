@@ -6,7 +6,7 @@ game_db = "./game-db.csv"
 class GameDb:
     def __init__(self):
         self.games = []
-        with open(game_db, newline='') as csv_file:
+        with open(game_db, newline='', encoding="ISO-8859-1") as csv_file:
             reader = csv.reader(csv_file, delimiter=";")
             next(reader, None)
             next(reader, None)
