@@ -41,6 +41,8 @@ def empty_export_folder():
         shutil.rmtree(export_dir)
         
     Path(export_dir).mkdir()
+    with open(f'{export_dir}/generated vmu files will appear here', 'w') as fp:
+        pass
          
 
 def match_game(matches, file_name):
@@ -186,7 +188,8 @@ def find_game(file_name: str, file: VmuFile):
 if (empty):
     empty_export_folder()
 
-vmuList =Path(import_dir).glob("*.vmu")
+
+vmuList = Path(import_dir).glob("**/*.[vV][mM][uU]")
 
 for vmu in vmuList:
     currentVmu = Vmu(str(vmu))
