@@ -189,7 +189,7 @@ if (empty):
     empty_export_folder()
 
 
-vmuList = Path(import_dir).glob("**/*.[vV][mM][uU]")
+vmuList = Path(import_dir).glob("**/*.[vV][mM][uUdD]")
 
 for vmu in vmuList:
     currentVmu = Vmu(str(vmu))
