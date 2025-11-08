@@ -43,7 +43,34 @@ def empty_export_folder():
     Path(export_dir).mkdir()
     with open(f'{export_dir}/generated vmu files will appear here', 'w') as fp:
         pass
-         
+
+
+def sort_func(e):
+    if (e['region'] == "USA"):
+        return "1 "
+    if (e['region'] == "Japan"):
+        return "2"
+    if (e['region'] == "Europe"):
+        return "3"
+    else:
+        return e['region']
+    
+def user_yes_no(query: str, **kwargs):
+    default_yes = kwargs.get("default_yes", False)
+    options = "(Y/n)" if default_yes else "(y/N)"
+
+    while 1:
+        response = input(f'{query} {options}:\n')
+        if (response == ""):
+            return True if default_yes else False
+        
+        if (response.lower() == "y" or response.lower() == "yes"):
+            return True
+        
+        if (response.lower() == "n" or response.lower() == "no"):
+            return False
+        
+        print("Invalid input")
 
 def match_game(matches, file_name):
     matched_game = None
@@ -60,7 +87,9 @@ def match_game(matches, file_name):
                 matched_game = match
 
     if (matched_game):
-            return matched_game
+        return matched_game
+    
+    matches.sort(key=sort_func)
             
     print(f"\n{len(matches)} matches for {file_name}:")
     for index, match in enumerate(matches):
@@ -70,10 +99,10 @@ def match_game(matches, file_name):
 
     selection = input("Select the matching game from the list above (Leave blank to skip):\n")
     if selection and matches[int(selection)-1]:
-            match = matches[int(selection)-1]
-            matched_game = match
+        match = matches[int(selection)-1]
+        matched_game = match
     else:
-            print("Skipping...\n")
+        print("Skipping...\n")
 
     return matched_game
 
@@ -149,7 +178,8 @@ def find_game(file_name: str, file: VmuFile):
     print(f"{file_name}")
     print(f"{file.desc}")
     print(f"{file.desc_long}")
-    if(input("Search for matching game? (y/N):\n") == "y"):
+    do_search = user_yes_no("Search for matching game?")
+    if(do_search):
         try_again = True
         while (try_again == True):
             try_again = False
@@ -160,7 +190,7 @@ def find_game(file_name: str, file: VmuFile):
             print(f"\n{len(results)} matches for \"{search}\":")
 
             if(len(results) == 0):
-                try_again = True if input("Try again? (y/N):\n") == "y" else False
+                try_again = user_yes_no("Try again?", default_yes=True)
                 continue
 
             for index, result in enumerate(results):
@@ -171,7 +201,15 @@ def find_game(file_name: str, file: VmuFile):
                 print(f"   [{index + 1}] {title} ({region}) [{game_id.strip()}] Edition: {edition}")
 
             selection = input("Select the matching game from the list above (Leave blank to abort):\n")
-            if selection and results[int(selection)-1]:
+
+            valid_response = int(selection)-1 in results if selection else True
+            if (not valid_response):
+                print("Invalid response")
+
+            if (selection == "" or not valid_response):
+                try_again = user_yes_no("Try again?", default_yes=True)
+
+            if selection and valid_response:
                 result = results[int(selection)-1]
                 chosen_game = result
                 title = result["title"]
