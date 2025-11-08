@@ -24,7 +24,7 @@ class GameDb:
     def find_games(self, search:str):
         matched_games = []
         for game in self.games:
-            if fnmatch.fnmatch(game["title"], f"*{search}*"):
+            if fnmatch.fnmatch(game["title"].lower(), f"*{search.lower()}*"):
                 matched_games.append(game)
 
         return matched_games
